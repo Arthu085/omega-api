@@ -16,19 +16,21 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "producoes")
-public class Producoes {
+@SequenceGenerator(name = "PRODUCOES_ID_SEQ", sequenceName = "PRODUCOES_ID_SEQ", allocationSize = 1, schema = "omega")
+@Table(name = "producoes", schema = "omega")
+public class Producao {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRODUCOES_ID_SEQ")
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "id_turno")
-    private Turnos turnos;
+    private Turno turno;
 
     @ManyToOne
     @JoinColumn(name = "id_forno")
-    private Fornos fornos;
+    private Forno forno;
 
     @ManyToOne
     @JoinColumn(name = "id_operador")

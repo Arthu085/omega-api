@@ -1,15 +1,22 @@
-package com.omega.api.auth.dtos;
+package com.omega.api.auth;
 
+import com.omega.api.auth.dtos.CreateUserDto;
+import com.omega.api.auth.dtos.LoginUserDto;
+import com.omega.api.auth.dtos.RecoveryJwtTokenDto;
+import com.omega.api.configuration.SecurityConfiguration;
 import com.omega.api.enums.StatusUsuario;
+import com.omega.api.models.Role;
 import com.omega.api.models.Usuario;
 import com.omega.api.repository.UsuarioRepository;
+import com.omega.api.security.JwtTokenService;
+import com.omega.api.security.userdetailimp.UserDetailImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -29,17 +36,14 @@ public class AuthService {
 
     public RecoveryJwtTokenDto authenticateUser(LoginUserDto loginUserDto) {
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(loginUserDto.usuario(), loginUserDto.senha());
+                new UsernamePasswordAuthenticationToken(loginUserDto.email(), loginUserDto.senha());
 
         Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-
-        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
-        return new  RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
+        UserDetailImpl userDetails = (UserDetailImpl) authentication.getPrincipal();
+        return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
     }
 
     public void createUser(CreateUserDto createUserDto) {
-
         Optional<Usuario> usuarioEmailRepetido =  usuarioRepository.findByEmail(createUserDto.email());
         if(usuarioEmailRepetido.isPresent()){
             throw new RuntimeException("Já possui um usuário com o email informado");
@@ -49,7 +53,8 @@ public class AuthService {
                 .sobrenome(createUserDto.sobrenome())
                 .email(createUserDto.email())
                 .senha(securityConfiguration.passwordEncoder().encode(createUserDto.senha()))
-                .status(String.valueOf(StatusUsuario.ATIVO))
+                .status(StatusUsuario.ATIVO)
+                .roles(List.of(Role.builder().roleName(createUserDto.role()).build()))
                 .build();
 
         usuarioRepository.save(newUser);

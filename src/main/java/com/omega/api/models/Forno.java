@@ -2,10 +2,7 @@ package com.omega.api.models;
 
 import com.omega.api.enums.SituacaoForno;
 import com.omega.api.enums.StatusForno;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,9 +13,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "fornos")
-public class Fornos {
+@SequenceGenerator(name = "FORNOS_ID_SEQ", sequenceName = "FORNOS_ID_SEQ", allocationSize = 1, schema = "omega")
+@Table(name = "fornos", schema = "omega")
+public class Forno {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FORNOS_ID_SEQ")
     private String id;
 
     @Column(name = "nro_forno")

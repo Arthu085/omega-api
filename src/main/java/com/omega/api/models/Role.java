@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 
 
 @Builder
@@ -14,13 +15,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "user_role")
-public class UserRole {
+@SequenceGenerator(name = "ROLES_ID_SEQ", sequenceName = "ROLES_ID_SEQ", allocationSize = 1, schema = "omega")
+@Table(name = "roles", schema = "omega")
+public class Role {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ROLES_ID_SEQ")
     private Long id;
 
     @Enumerated(EnumType.STRING)
     private RoleUser roleName;
 
+    @ManyToMany(mappedBy = "roles")
+    private List<Usuario> usuarios;
 }

@@ -1,27 +1,33 @@
 package com.omega.api.models;
 
-
+import com.omega.api.enums.StatusUsuario;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Entity
-@Table(name = "usuarios")
+@SequenceGenerator(name = "USUARIOS_ID_SEQ", sequenceName = "USUARIOS_ID_SEQ", allocationSize = 1, schema = "omega")
+@Table(name = "usuarios", schema = "omega")
 public class Usuario {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USUARIOS_ID_SEQ")
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne()
-    @JoinColumn(name = "id_role")
-    private Long role;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    @JoinTable(name = "usuarios_roles",
+            joinColumns = @JoinColumn(name = "id_usuario"),
+            inverseJoinColumns = @JoinColumn(name = "id_role"), schema = "omega")
+    private List<Role> roles;
 
     @Column(name = "email")
     private String email;
@@ -30,7 +36,7 @@ public class Usuario {
     private String senha;
 
     @Column(name = "status")
-    private String status;
+    private StatusUsuario status;
 
     @Column(name = "nome")
     private String nome;

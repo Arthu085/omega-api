@@ -8,7 +8,7 @@ public enum StatusProducao {
     private Integer value;
     private String descricao;
 
-    private StatusProducao(Integer value, String descricao) {
+    StatusProducao(Integer value, String descricao) {
         this.value = value;
         this.descricao = descricao;
     }

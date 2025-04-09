@@ -3,13 +3,13 @@ package com.omega.api.auth;
 import com.omega.api.auth.dtos.CreateUserDto;
 import com.omega.api.auth.dtos.LoginUserDto;
 import com.omega.api.auth.dtos.RecoveryJwtTokenDto;
+import com.omega.api.auth.dtos.UsuarioResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -28,5 +28,11 @@ public class AuthController {
     public ResponseEntity<Object> createUser(@RequestBody CreateUserDto createUserDto) {
         authService.createUser(createUserDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UsuarioResponseDto>> listarUsuarios() {
+        List<UsuarioResponseDto> usuarios = authService.listarUsuarios();
+        return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
 }

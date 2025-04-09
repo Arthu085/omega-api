@@ -3,6 +3,7 @@ package com.omega.api.auth;
 import com.omega.api.auth.dtos.CreateUserDto;
 import com.omega.api.auth.dtos.LoginUserDto;
 import com.omega.api.auth.dtos.RecoveryJwtTokenDto;
+import com.omega.api.auth.dtos.UsuarioResponseDto;
 import com.omega.api.configuration.SecurityConfiguration;
 import com.omega.api.enums.StatusUsuario;
 import com.omega.api.models.Role;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
@@ -59,4 +61,17 @@ public class AuthService {
 
         usuarioRepository.save(newUser);
     }
+
+    public List<UsuarioResponseDto> listarUsuarios() {
+        List<Usuario> usuarios = usuarioRepository.findAll();
+
+        return usuarios.stream().map(usuario -> new UsuarioResponseDto(
+                usuario.getId(),
+                usuario.getNome(),
+                usuario.getSobrenome(),
+                usuario.getEmail(),
+                usuario.getStatus()
+        )).collect(Collectors.toList());
+    }
+
 }

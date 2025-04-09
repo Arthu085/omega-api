@@ -70,8 +70,7 @@ public class AuthService {
                 usuario.getNome(),
                 usuario.getSobrenome(),
                 usuario.getEmail(),
-                usuario.getStatus(),
-                usuario.getSenha()
+                usuario.getStatus()
         )).collect(Collectors.toList());
     }
 

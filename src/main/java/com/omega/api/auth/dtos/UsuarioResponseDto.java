@@ -10,15 +10,13 @@ public class UsuarioResponseDto {
     private String sobrenome;
     private String email;
     private StatusUsuario status;
-    private String senha;
 
-    public UsuarioResponseDto(Long id, String nome, String sobrenome, String email, StatusUsuario status, String senha) {
+    public UsuarioResponseDto(Long id, String nome, String sobrenome, String email, StatusUsuario status) {
         this.id = id;
         this.nome = nome;
         this.sobrenome = sobrenome;
         this.email = email;
         this.status = status;
-        this.senha = senha;
     }
 
     public void setId(Long id) {
@@ -41,10 +39,6 @@ public class UsuarioResponseDto {
         this.status = status;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
     public Long getId() {
         return id;
     }
@@ -63,9 +57,5 @@ public class UsuarioResponseDto {
 
     public StatusUsuario getStatus() {
         return status;
-    }
-
-    public String getSenha() {
-        return senha;
     }
 }

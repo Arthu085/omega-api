@@ -1,13 +1,13 @@
 package com.omega.api.enums;
 
 public enum StatusForno {
-    EM_MANUTENCAO(0, "Em manutenção"),
-    ATIVO(1, "Ativo");
+    EM_MANUTENCAO("M", "Em manutenção"),
+    ATIVO("A", "Ativo");
 
-    private Integer value;
+    private String value;
     private String descricao;
 
-    StatusForno(Integer value, String descricao) {
+    StatusForno(String value, String descricao) {
         this.value = value;
         this.descricao = descricao;
     }

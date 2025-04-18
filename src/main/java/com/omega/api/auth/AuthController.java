@@ -41,7 +41,6 @@ public class AuthController {
 
     @GetMapping("/user")
     public ResponseEntity<Object> getUser(@AuthenticationPrincipal UserDetailsServiceImpl userDetails) {
-        System.out.println("Chegou no get");
         if (userDetails == null) {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }

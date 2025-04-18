@@ -3,13 +3,22 @@ package com.omega.api.auth;
 import com.omega.api.auth.dtos.CreateUserDto;
 import com.omega.api.auth.dtos.LoginUserDto;
 import com.omega.api.auth.dtos.RecoveryJwtTokenDto;
+import com.omega.api.security.UserDetailsServiceImpl;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.*;
+
+@CrossOrigin(
+        origins = "http://localhost:5173",
+        allowedHeaders = "*",
+        methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.OPTIONS},
+        allowCredentials = "true"
+)
 
 @RestController
 @RequestMapping("/auth")
@@ -28,5 +37,15 @@ public class AuthController {
     public ResponseEntity<Object> createUser(@RequestBody CreateUserDto createUserDto) {
         authService.createUser(createUserDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @GetMapping("/user")
+    public ResponseEntity<Object> getUser(@AuthenticationPrincipal UserDetailsServiceImpl userDetails) {
+        System.out.println("Chegou no get");
+        if (userDetails == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        var auth = authService.getAuthenticateUser(userDetails.getUsuario());
+        return new ResponseEntity<>(auth, HttpStatus.OK);
     }
 }

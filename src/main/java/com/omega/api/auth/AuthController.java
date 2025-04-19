@@ -13,13 +13,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(
-        origins = "http://localhost:5173",
-        allowedHeaders = "*",
-        methods = {RequestMethod.POST, RequestMethod.GET, RequestMethod.OPTIONS},
-        allowCredentials = "true"
-)
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

@@ -37,10 +37,7 @@ public class FurnaceService {
 
         List<Forno> content = page.getContent();
 
-        content.forEach(forno -> {
-            System.out.println("Forno encontrado: " + forno.getNome());
-        });
-
         return content;
     }
+
 }

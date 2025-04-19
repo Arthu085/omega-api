@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/fornos")
@@ -25,14 +27,21 @@ public class FurnaceController {
     }
 
     @GetMapping("/")
-    public List<Forno> getAllFurnaces(
+    public Map<String, Object> getAllFurnaces(
             @RequestParam(required = false, defaultValue = "") String search,
             @RequestParam(required = false, defaultValue = "10") int take,
             @RequestParam(required = false, defaultValue = "0") int skip
     ) {
-        var retorno = furnaceService.getAllFurnace(search, take, skip);
+        List<Forno> fornos = furnaceService.getAllFurnace(search, take, skip);
+        long total = fornos.size();
 
-        System.out.println(retorno);
-        return  retorno;
+        int pages = (int) Math.ceil((double) total / take);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", fornos);
+        response.put("total", total);
+        response.put("pages", pages);
+
+        return response;
     }
 }

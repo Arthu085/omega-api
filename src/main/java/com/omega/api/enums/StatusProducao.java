@@ -1,14 +1,14 @@
 package com.omega.api.enums;
 
 public enum StatusProducao {
-    PARADO(0, "Parado"),
-    EXECUTANDO(1, "Executando"),
-    FINALIZADA(2, "Finalizada");
+    PARADO("P", "Parado"),
+    EXECUTANDO("E", "Executando"),
+    FINALIZADA("F", "Finalizada");
 
-    private Integer value;
+    private String value;
     private String descricao;
 
-    StatusProducao(Integer value, String descricao) {
+    StatusProducao(String value, String descricao) {
         this.value = value;
         this.descricao = descricao;
     }

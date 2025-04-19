@@ -12,6 +12,13 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+import com.omega.api.auth.dtos.UsuarioResponseDto;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/auth")
@@ -32,6 +39,7 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+
     @GetMapping("/user")
     public ResponseEntity<Object> getUser(@AuthenticationPrincipal UserDetailsServiceImpl userDetails) {
         if (userDetails == null) {
@@ -39,5 +47,11 @@ public class AuthController {
         }
         var auth = authService.getAuthenticateUser(userDetails.getUsuario());
         return new ResponseEntity<>(auth, HttpStatus.OK);
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UsuarioResponseDto>> listarUsuarios() {
+        List<UsuarioResponseDto> usuarios = authService.listarUsuarios();
+        return new ResponseEntity<>(usuarios, HttpStatus.OK);
+
     }
 }

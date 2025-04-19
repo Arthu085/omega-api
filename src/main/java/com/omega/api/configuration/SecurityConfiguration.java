@@ -35,6 +35,7 @@ public class SecurityConfiguration {
             "/auth/user", //url que usaremos carregar quando fizer um refresh na página
             "/fornos/create",
             "/fornos/"
+            "/auth/users", //url para fazer get dos usuários
     };
 
     // Endpoints que requerem autenticação para serem acessados

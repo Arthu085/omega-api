@@ -3,6 +3,15 @@ package com.omega.api.auth;
 import com.omega.api.auth.dtos.CreateUserDto;
 import com.omega.api.auth.dtos.LoginUserDto;
 import com.omega.api.auth.dtos.RecoveryJwtTokenDto;
+import com.omega.api.security.UserDetailsServiceImpl;
+import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.*;
 import com.omega.api.auth.dtos.UsuarioResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,9 +39,19 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+
+    @GetMapping("/user")
+    public ResponseEntity<Object> getUser(@AuthenticationPrincipal UserDetailsServiceImpl userDetails) {
+        if (userDetails == null) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        var auth = authService.getAuthenticateUser(userDetails.getUsuario());
+        return new ResponseEntity<>(auth, HttpStatus.OK);
+
     @GetMapping("/users")
     public ResponseEntity<List<UsuarioResponseDto>> listarUsuarios() {
         List<UsuarioResponseDto> usuarios = authService.listarUsuarios();
         return new ResponseEntity<>(usuarios, HttpStatus.OK);
+
     }
 }

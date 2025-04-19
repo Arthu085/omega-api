@@ -19,7 +19,10 @@ public class Forno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FORNOS_ID_SEQ")
-    private String id;
+    private Long id;
+
+    @Column(name = "nome")
+    private String nome;
 
     @Column(name = "nro_forno")
     private Integer nroForno;

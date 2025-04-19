@@ -1,5 +1,6 @@
 package com.omega.api.auth;
 
+import com.omega.api.User.dtos.UserResponseDto;
 import com.omega.api.auth.dtos.CreateUserDto;
 import com.omega.api.auth.dtos.LoginUserDto;
 import com.omega.api.auth.dtos.RecoveryJwtTokenDto;
@@ -12,10 +13,12 @@ import com.omega.api.repository.UsuarioRepository;
 import com.omega.api.security.JwtTokenService;
 import com.omega.api.security.userdetailimp.UserDetailImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,6 +65,11 @@ public class AuthService {
         usuarioRepository.save(newUser);
     }
 
+    public UserResponseDto getAuthenticateUser(String email) {
+        Usuario user = usuarioRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+        return new UserResponseDto(user);
+    }
     public List<UsuarioResponseDto> listarUsuarios() {
         List<Usuario> usuarios = usuarioRepository.findAll();
 

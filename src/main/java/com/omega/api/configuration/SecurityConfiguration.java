@@ -40,7 +40,7 @@ public class SecurityConfiguration {
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
             "/fornos/create",
             "/fornos",
-            "/users",
+            "/fornos/update/*",
             "/users/get" //url para fazer get dos usuários
     };
 

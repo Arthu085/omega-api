@@ -1,6 +1,7 @@
 package com.omega.api.furnace;
 
 import com.omega.api.furnace.dtos.CreateFurnaceDTO;
+import com.omega.api.furnace.dtos.UpdateFurnanceDto;
 import com.omega.api.models.Forno;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -42,4 +43,11 @@ public class FurnaceController {
 
         return response;
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Void> updateFurnace(@PathVariable Long id, @RequestBody UpdateFurnanceDto dto) {
+        furnaceService.update(id, dto);
+        return ResponseEntity.ok().build();
+    }
+
 }

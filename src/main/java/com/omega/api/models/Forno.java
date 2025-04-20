@@ -3,10 +3,7 @@ package com.omega.api.models;
 import com.omega.api.enums.SituacaoForno;
 import com.omega.api.enums.StatusForno;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @AllArgsConstructor
@@ -21,9 +18,11 @@ public class Forno {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "FORNOS_ID_SEQ")
     private Long id;
 
+    @Setter
     @Column(name = "nome")
     private String nome;
 
+    @Setter
     @Column(name = "nro_forno")
     private Integer nro_forno;
 

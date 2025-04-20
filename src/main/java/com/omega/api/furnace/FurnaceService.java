@@ -3,6 +3,7 @@ package com.omega.api.furnace;
 import com.omega.api.enums.SituacaoForno;
 import com.omega.api.enums.StatusForno;
 import com.omega.api.furnace.dtos.CreateFurnaceDTO;
+import com.omega.api.furnace.dtos.UpdateFurnanceDto;
 import com.omega.api.repository.FurnaceRepository;
 import com.omega.api.models.Forno;
 import org.springframework.data.domain.PageRequest;
@@ -39,5 +40,21 @@ public class FurnaceService {
 
         return content;
     }
+
+    public void update(Long id, UpdateFurnanceDto dto) {
+        Forno forno = furnaceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Forno não encontrado com ID: " + id));
+
+        if (dto.getNome() != null) {
+            forno.setNome(dto.getNome());
+        }
+
+        if (dto.getNro_forno() != null) {
+            forno.setNro_forno(dto.getNro_forno());
+        }
+
+        furnaceRepository.save(forno);
+    }
+
 
 }

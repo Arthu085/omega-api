@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import com.omega.api.auth.dtos.UsuarioResponseDto;
 import java.util.List;
 
 @RestController
@@ -41,10 +40,5 @@ public class AuthController {
         return new ResponseEntity<>(auth, HttpStatus.OK);
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<UsuarioResponseDto>> listarUsuarios() {
-        List<UsuarioResponseDto> usuarios = authService.listarUsuarios();
-        return new ResponseEntity<>(usuarios, HttpStatus.OK);
 
-    }
 }

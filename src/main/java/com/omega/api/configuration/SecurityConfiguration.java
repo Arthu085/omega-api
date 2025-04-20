@@ -33,7 +33,7 @@ public class SecurityConfiguration {
             "/auth/login", //url que usaremos para fazer login
             "/auth", //url que usaremos para criar um usuário
             "/auth/user", //url que usaremos carregar quando fizer um refresh na página
-            "/auth/users", //url para fazer get dos usuários
+            "/users/get", //url para fazer get dos usuários
     };
 
     // Endpoints que requerem autenticação para serem acessados

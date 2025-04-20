@@ -33,19 +33,17 @@ public class SecurityConfiguration {
             "/auth/login", //url que usaremos para fazer login
             "/auth", //url que usaremos para criar um usuário
             "/auth/user", //url que usaremos carregar quando fizer um refresh na página
-            "/fornos/create",
-            "/fornos/"
             "/auth/users", //url para fazer get dos usuários
     };
 
     // Endpoints que requerem autenticação para serem acessados
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
+            "/fornos/create",
+            "/fornos"
     };
 
-    // Endpoints que só podem ser acessador por usuários com permissão de admin
     public static final String[] ROLE_ADMIN = {};
 
-    // Endpoints que só podem ser acessador por usuários com permissão de nutricionista
     public static final String[] ROLE_USER = {};
 
     @Bean
@@ -56,9 +54,7 @@ public class SecurityConfiguration {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth.requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
-                        .requestMatchers(ROLE_ADMIN).hasRole("ADMIN")
-                        .requestMatchers(ROLE_USER).hasRole("USER")
-                        .anyRequest().denyAll())
+                        .anyRequest().authenticated())
                 .addFilterBefore(usuarioAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }

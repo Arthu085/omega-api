@@ -3,7 +3,7 @@ package com.omega.api.furnace;
 import com.omega.api.enums.SituacaoForno;
 import com.omega.api.enums.StatusForno;
 import com.omega.api.furnace.dtos.CreateFurnaceDTO;
-import com.omega.api.furnace.repository.FurnaceRepository;
+import com.omega.api.repository.FurnaceRepository;
 import com.omega.api.models.Forno;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,7 +26,7 @@ public class FurnaceService {
                 .status(StatusForno.ATIVO)
                 .situacao(SituacaoForno.LIGADO)
                 .build();
-        ;
+
         furnaceRepository.save(furnace);
     }
 

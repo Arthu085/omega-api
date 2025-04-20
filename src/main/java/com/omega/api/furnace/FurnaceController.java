@@ -1,6 +1,5 @@
 package com.omega.api.furnace;
 
-
 import com.omega.api.furnace.dtos.CreateFurnaceDTO;
 import com.omega.api.models.Forno;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,7 @@ import java.util.Map;
 public class FurnaceController {
 
     @Autowired
-    FurnaceService furnaceService;
-
+    private FurnaceService furnaceService;
 
     @PostMapping("/create")
     public ResponseEntity<Void> createFurnace(@RequestBody CreateFurnaceDTO createFurnaceDTO){
@@ -26,7 +24,7 @@ public class FurnaceController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    @GetMapping("/")
+    @GetMapping
     public Map<String, Object> getAllFurnaces(
             @RequestParam(required = false, defaultValue = "") String search,
             @RequestParam(required = false, defaultValue = "10") int take,

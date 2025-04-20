@@ -1,65 +1,62 @@
 package com.omega.api.security;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTCreationException;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.omega.api.security.userdetailimp.UserDetailImpl;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Service
 public class JwtTokenService {
 
-    private static final String SECRET_KEY = "4Z^XrroxR@dWxqf$mTTKwW$!@#qGr4P"; // Chave secreta utilizada para gerar e verificar o token
-
-    private static final String ISSUER = "projeto-integrador-api"; // Emissor do token
+    private static final String SECRET_KEY = "2b9f856281f942a22d9181f42656a1a8c5a8977696fdfc163534306c928c32b1";
+    private static final String ISSUER = "projeto-integrador-api";
 
     public String generateToken(UserDetailImpl user) {
-        try {
-            // Define o algoritmo HMAC SHA256 para criar a assinatura do token passando a chave secreta definida
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-            return JWT.create()
-                    .withIssuer(ISSUER) // Define o emissor do token
-                    .withIssuedAt(creationDate()) // Define a data de emissão do token
-                    .withExpiresAt(expirationDate()) // Define a data de expiração do token
-                    .withSubject(user.getUsername()) // Define o assunto do token (neste caso, o nome de usuário)
-                    .sign(algorithm); // Assina o token usando o algoritmo especificado
-        } catch (JWTCreationException exception){
-            throw new JWTCreationException("Erro ao gerar token.", exception);
-        }
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .setIssuer(ISSUER)
+                .setIssuedAt(Date.from(creationDate()))
+                .setExpiration(Date.from(expirationDate()))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
-//    public String getSubjectFromToken(String token) {
-//        try {
-//            // Define o algoritmo HMAC SHA256 para verificar a assinatura do token passando a chave secreta definida
-//            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-//            return JWT.require(algorithm)
-//                    .withIssuer(ISSUER) // Define o emissor do token
-//                    .build()
-//                    .verify(token) // Verifica a validade do token
-//                    .getSubject(); // Obtém o assunto (neste caso, o nome de usuário) do token
-//        } catch (JWTVerificationException exception){
-//            throw new JWTVerificationException("Token inválido ou expirado.");
-//        }
-//    }
-//
-//    public Long getEntidadeFromToken(String token) {
-//        try {
-//            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
-//            return JWT.require(algorithm)
-//                    .withIssuer(ISSUER)
-//                    .build()
-//                    .verify(token)
-//                    .getClaim("entidade")
-//                    .asLong();
-//        } catch (JWTVerificationException exception){
-//            throw new JWTVerificationException("Token inválido ou expirado");
-//        }
-//    }
+    public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+        final String username = extractUsername(token);
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+    }
+
+    private boolean isTokenExpired(String token) {
+        return extractAllClaims(token).getExpiration().before(new Date());
+    }
+
+    private Claims extractAllClaims(String token) {
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    private Key getSignInKey() {
+        byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
+        return Keys.hmacShaKeyFor(keyBytes);
+    }
 
     private Instant creationDate() {
         return ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toInstant();

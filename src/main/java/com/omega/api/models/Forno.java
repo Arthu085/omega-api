@@ -25,7 +25,7 @@ public class Forno {
     private String nome;
 
     @Column(name = "nro_forno")
-    private Integer nroForno;
+    private Integer nro_forno;
 
     @Column(name = "status")
     private StatusForno status;

@@ -22,7 +22,7 @@ public class FurnaceService {
     public void create(CreateFurnaceDTO dto) {
         Forno furnace = Forno.builder()
                 .nome(dto.nome())
-                .nroForno(dto.nro_forno())
+                .nro_forno(dto.nro_forno())
                 .status(StatusForno.ATIVO)
                 .situacao(SituacaoForno.LIGADO)
                 .build();

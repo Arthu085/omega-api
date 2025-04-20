@@ -3,7 +3,6 @@ package com.omega.api.auth;
 import com.omega.api.auth.dtos.CreateUserDto;
 import com.omega.api.auth.dtos.LoginUserDto;
 import com.omega.api.auth.dtos.RecoveryJwtTokenDto;
-import com.omega.api.auth.dtos.UsuarioResponseDto;
 import com.omega.api.configuration.SecurityConfiguration;
 import com.omega.api.enums.StatusUsuario;
 import com.omega.api.models.Role;
@@ -19,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import com.omega.api.auth.dtos.UsuarioResponseDto;
 
 import java.util.List;
 import java.util.Optional;
@@ -73,19 +73,6 @@ public class AuthService {
                 user.getEmail(),
                 user.getStatus(),
                 user.getRoles());
-    }
-
-    public List<UsuarioResponseDto> listarUsuarios() {
-        List<Usuario> usuarios = usuarioRepository.findAll();
-
-        return usuarios.stream().map(usuario -> new UsuarioResponseDto(
-                usuario.getId(),
-                usuario.getNome(),
-                usuario.getSobrenome(),
-                usuario.getEmail(),
-                usuario.getStatus(),
-                usuario.getRoles()
-        )).collect(Collectors.toList());
     }
 
 }

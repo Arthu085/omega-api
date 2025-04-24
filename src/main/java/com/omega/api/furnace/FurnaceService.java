@@ -23,9 +23,8 @@ public class FurnaceService {
     public void create(CreateFurnaceDTO dto) {
         Forno furnace = Forno.builder()
                 .nome(dto.nome())
-                .nro_forno(dto.nro_forno())
+                .nroForno(dto.nroForno())
                 .status(StatusForno.ATIVO)
-                .situacao(SituacaoForno.LIGADO)
                 .build();
 
         furnaceRepository.save(furnace);
@@ -49,8 +48,8 @@ public class FurnaceService {
             forno.setNome(dto.getNome());
         }
 
-        if (dto.getNro_forno() != null) {
-            forno.setNro_forno(dto.getNro_forno());
+        if (dto.getNroForno() != null) {
+            forno.setNroForno(dto.getNroForno());
         }
 
         furnaceRepository.save(forno);

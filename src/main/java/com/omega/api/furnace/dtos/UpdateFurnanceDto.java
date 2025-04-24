@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UpdateFurnanceDto {
     private String nome;
-    private Integer nro_forno;
+    private Integer nroForno;
 
     // Getters e Setters
     public String getNome() {
@@ -16,11 +16,11 @@ public class UpdateFurnanceDto {
         this.nome = nome;
     }
 
-    public Integer getNro_forno() {
-        return nro_forno;
+    public Integer getNroForno() {
+        return nroForno;
     }
 
-    public void setNro_forno(Integer nro_forno) {
-        this.nro_forno = nro_forno;
+    public void setNroForno(Integer nroForno) {
+        this.nroForno = nroForno;
     }
 }

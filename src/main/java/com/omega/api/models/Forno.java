@@ -24,11 +24,9 @@ public class Forno {
 
     @Setter
     @Column(name = "nro_forno")
-    private Integer nro_forno;
+    private Integer nroForno;
 
     @Column(name = "status")
     private StatusForno status;
 
-    @Column(name = "situacao")
-    private SituacaoForno situacao;
 }

@@ -2,7 +2,8 @@ package com.omega.api.enums;
 
 public enum StatusForno {
     EM_MANUTENCAO("M", "Em manutenção"),
-    ATIVO("A", "Ativo");
+    ATIVO("A", "Ativo"),
+    INATIVO("I", "Inativo");
 
     private String value;
     private String descricao;

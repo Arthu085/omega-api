@@ -8,6 +8,7 @@ import com.omega.api.repository.FurnaceRepository;
 import com.omega.api.models.Forno;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import java.util.Optional;
 
 import java.util.List;
 
@@ -55,5 +56,13 @@ public class FurnaceService {
         furnaceRepository.save(forno);
     }
 
+    public void delete(Long id) {
+        Optional<Forno> forno = furnaceRepository.findById(id);
+        if (forno.isPresent()) {
+            furnaceRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Forno não encontrado com o ID: " + id);
+        }
+    }
 
 }

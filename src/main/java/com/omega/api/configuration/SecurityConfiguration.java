@@ -30,9 +30,9 @@ public class SecurityConfiguration {
     private UsuarioAuthenticationFilter usuarioAuthenticationFilter;
 
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            "/auth/login", //url que usaremos para fazer login
-            "/auth", //url que usaremos para criar um usuário
-            "/auth/user" //url que usaremos carregar quando fizer um refresh na página
+            "/auth/login", // url que usaremos para fazer login
+            "/auth", // url que usaremos para criar um usuário
+            "/auth/user", // url que usaremos carregar quando fizer um refresh na página
 
     };
 
@@ -41,7 +41,8 @@ public class SecurityConfiguration {
             "/fornos/create",
             "/fornos",
             "/fornos/update/*",
-            "/users/get" //url para fazer get dos usuários
+            "/users/get", // url para fazer get dos usuários
+            "/fornos/delete/*"
     };
 
     public static final String[] ROLE_ADMIN = {};
@@ -54,15 +55,17 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable) // Desativa a proteção contra CSRF
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth.requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
-                        .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
-                        .anyRequest().authenticated())
+                .authorizeHttpRequests(
+                        auth -> auth.requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
+                                .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
+                                .anyRequest().authenticated())
                 .addFilterBefore(usuarioAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 

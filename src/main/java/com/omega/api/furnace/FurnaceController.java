@@ -20,7 +20,7 @@ public class FurnaceController {
     private FurnaceService furnaceService;
 
     @PostMapping("/create")
-    public ResponseEntity<Void> createFurnace(@RequestBody CreateFurnaceDTO createFurnaceDTO){
+    public ResponseEntity<Void> createFurnace(@RequestBody CreateFurnaceDTO createFurnaceDTO) {
         furnaceService.create(createFurnaceDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -29,8 +29,7 @@ public class FurnaceController {
     public Map<String, Object> getAllFurnaces(
             @RequestParam(required = false, defaultValue = "") String search,
             @RequestParam(required = false, defaultValue = "10") int take,
-            @RequestParam(required = false, defaultValue = "0") int skip
-    ) {
+            @RequestParam(required = false, defaultValue = "0") int skip) {
         List<Forno> fornos = furnaceService.getAllFurnace(search, take, skip);
         long total = fornos.size();
 
@@ -48,6 +47,12 @@ public class FurnaceController {
     public ResponseEntity<Void> updateFurnace(@PathVariable Long id, @RequestBody UpdateFurnanceDto dto) {
         furnaceService.update(id, dto);
         return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Void> deleteFurnace(@PathVariable Long id) {
+        furnaceService.delete(id);
+        return ResponseEntity.noContent().build(); // HTTP 204 No Content
     }
 
 }

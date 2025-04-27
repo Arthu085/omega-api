@@ -33,7 +33,6 @@ public class SecurityConfiguration {
             "/auth/login", // url que usaremos para fazer login
             "/auth", // url que usaremos para criar um usuário
             "/auth/user", // url que usaremos carregar quando fizer um refresh na página
-            "/fornos/delete/*"
 
     };
 
@@ -42,7 +41,8 @@ public class SecurityConfiguration {
             "/fornos/create",
             "/fornos",
             "/fornos/update/*",
-            "/users/get" // url para fazer get dos usuários
+            "/users/get", // url para fazer get dos usuários
+            "/fornos/delete/*"
     };
 
     public static final String[] ROLE_ADMIN = {};

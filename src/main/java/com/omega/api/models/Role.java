@@ -1,5 +1,6 @@
 package com.omega.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.omega.api.enums.RoleUser;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -27,5 +28,6 @@ public class Role {
     private RoleUser roleName;
 
     @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private List<Usuario> usuarios;
 }

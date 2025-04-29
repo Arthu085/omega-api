@@ -38,6 +38,4 @@ public class AuthController {
         var auth = authService.getAuthenticateUser(username);
         return new ResponseEntity<>(auth, HttpStatus.OK);
     }
-
-
 }

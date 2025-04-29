@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -32,11 +33,9 @@ public class AuthController {
 
 
     @GetMapping("/user")
-    public ResponseEntity<Object> getUser(@AuthenticationPrincipal UserDetailsServiceImpl userDetails) {
-        if (userDetails == null) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-        var auth = authService.getAuthenticateUser(userDetails.getUsuario());
+    public ResponseEntity<Object> getUser(@AuthenticationPrincipal UserDetails userDetails) {
+        String username = userDetails.getUsername();
+        var auth = authService.getAuthenticateUser(username);
         return new ResponseEntity<>(auth, HttpStatus.OK);
     }
 

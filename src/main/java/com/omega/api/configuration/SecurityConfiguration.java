@@ -32,7 +32,6 @@ public class SecurityConfiguration {
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
             "/auth/login", // url que usaremos para fazer login
             "/auth", // url que usaremos para criar um usuário
-            "/auth/user", // url que usaremos carregar quando fizer um refresh na página
 
     };
 
@@ -42,7 +41,8 @@ public class SecurityConfiguration {
             "/fornos",
             "/fornos/update/*",
             "/users/get", // url para fazer get dos usuários
-            "/fornos/delete/*"
+            "/fornos/delete/*",
+            "/auth/user"
     };
 
     public static final String[] ROLE_ADMIN = {};

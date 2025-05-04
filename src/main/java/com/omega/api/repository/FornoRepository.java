@@ -7,6 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface FurnaceRepository extends JpaRepository<Forno, Long> {
+public interface FornoRepository extends JpaRepository<Forno, Long> {
     Page<Forno> findByNomeContainingIgnoreCase(String nome, Pageable pageable);
 }

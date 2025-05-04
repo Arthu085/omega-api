@@ -1,5 +1,6 @@
 package com.omega.api.security;
 
+import com.omega.api.configuration.exception.ValidationException;
 import com.omega.api.models.Usuario;
 import com.omega.api.repository.UsuarioRepository;
 import com.omega.api.security.userdetailimp.UserDetailImpl;
@@ -14,15 +15,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
-    private Usuario usuario;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findByEmail(username).orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+        Usuario usuario = usuarioRepository.findByEmail(username).orElseThrow(() -> new ValidationException("Usuario não encontrado"));
         return new UserDetailImpl(usuario);
-    }
-
-    public String getUsuario() {
-        return usuario.toString();
     }
 }

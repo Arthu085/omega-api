@@ -1,9 +1,9 @@
-package com.omega.api.furnace.dtos;
+package com.omega.api.forno.dtos;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UpdateFurnanceDto {
+public class UpdateFornoDto {
     private String nome;
     private Integer nroForno;
 

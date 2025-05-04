@@ -7,14 +7,14 @@ import java.util.Objects;
 
 @Embeddable
 public class ProducaoResponsavelId implements Serializable {
-    private Integer idProducao;
-    private Integer idResponsavel;
+    private Long idProducao;
+    private Long idResponsavel;
     private String status;
 
     public ProducaoResponsavelId() {}
 
     // All-args constructor
-    public ProducaoResponsavelId(Integer idProducao, Integer idResponsavel, String status) {
+    public ProducaoResponsavelId(Long idProducao, Long idResponsavel, String status) {
         this.idProducao = idProducao;
         this.idResponsavel = idResponsavel;
         this.status = status;

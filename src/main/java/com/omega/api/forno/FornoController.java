@@ -1,7 +1,7 @@
-package com.omega.api.furnace;
+package com.omega.api.forno;
 
-import com.omega.api.furnace.dtos.CreateFurnaceDTO;
-import com.omega.api.furnace.dtos.UpdateFurnanceDto;
+import com.omega.api.forno.dtos.CreateFornoDto;
+import com.omega.api.forno.dtos.UpdateFornoDto;
 import com.omega.api.models.Forno;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,23 +14,23 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/fornos")
-public class FurnaceController {
+public class FornoController {
 
     @Autowired
-    private FurnaceService furnaceService;
+    private FornoService fornoService;
 
     @PostMapping("/create")
-    public ResponseEntity<Void> createFurnace(@RequestBody CreateFurnaceDTO createFurnaceDTO) {
-        furnaceService.create(createFurnaceDTO);
+    public ResponseEntity<Void> createForno(@RequestBody CreateFornoDto createFornoDto) {
+        fornoService.create(createFornoDto);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
-    public Map<String, Object> getAllFurnaces(
+    public Map<String, Object> getAllFornos(
             @RequestParam(required = false, defaultValue = "") String search,
             @RequestParam(required = false, defaultValue = "10") int take,
             @RequestParam(required = false, defaultValue = "0") int skip) {
-        List<Forno> fornos = furnaceService.getAllFurnace(search, take, skip);
+        List<Forno> fornos = fornoService.getAllFornos(search, take, skip);
         long total = fornos.size();
 
         int pages = (int) Math.ceil((double) total / take);
@@ -44,14 +44,14 @@ public class FurnaceController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Void> updateFurnace(@PathVariable Long id, @RequestBody UpdateFurnanceDto dto) {
-        furnaceService.update(id, dto);
+    public ResponseEntity<Void> updateForno(@PathVariable Long id, @RequestBody UpdateFornoDto dto) {
+        fornoService.update(id, dto);
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteFurnace(@PathVariable Long id) {
-        furnaceService.delete(id);
+    public ResponseEntity<Void> deleteForno(@PathVariable Long id) {
+        fornoService.delete(id);
         return ResponseEntity.noContent().build(); // HTTP 204 No Content
     }
 

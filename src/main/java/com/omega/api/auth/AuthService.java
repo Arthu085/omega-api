@@ -4,6 +4,7 @@ import com.omega.api.auth.dtos.CreateUserDto;
 import com.omega.api.auth.dtos.LoginUserDto;
 import com.omega.api.auth.dtos.RecoveryJwtTokenDto;
 import com.omega.api.configuration.SecurityConfiguration;
+import com.omega.api.configuration.exception.ValidationException;
 import com.omega.api.enums.StatusUsuario;
 import com.omega.api.models.Role;
 import com.omega.api.models.Usuario;
@@ -51,7 +52,7 @@ public class AuthService {
     public void createUser(CreateUserDto createUserDto) {
         Optional<Usuario> usuarioEmailRepetido =  usuarioRepository.findByEmail(createUserDto.email());
         if(usuarioEmailRepetido.isPresent()){
-            throw new RuntimeException("Já possui um usuário com o email informado");
+            throw new ValidationException("Já possui um usuário com o email informado");
         }
         Usuario newUser = Usuario.builder()
                 .nome(createUserDto.nome())

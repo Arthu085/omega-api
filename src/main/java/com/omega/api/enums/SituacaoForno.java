@@ -12,4 +12,8 @@ public enum SituacaoForno {
         this.value = value;
         this.descricao = descricao;
     }
+
+    public String getValue() {
+        return value;
+    }
 }

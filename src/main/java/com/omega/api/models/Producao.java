@@ -1,12 +1,10 @@
 package com.omega.api.models;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.omega.api.enums.StatusProducao;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 @SequenceGenerator(name = "PRODUCOES_ID_SEQ", sequenceName = "PRODUCOES_ID_SEQ", allocationSize = 1, schema = "omega")
 @Table(name = "producoes", schema = "omega")
@@ -32,12 +31,8 @@ public class Producao {
     @JoinColumn(name = "id_forno")
     private Forno forno;
 
-    @ManyToOne
-    @JoinColumn(name = "id_operador")
-    private Usuario usuario;
-
     @Column(name = "lote_frita")
-    private Integer loteFrita;
+    private String loteFrita;
 
     @Column(name = "nro_producao")
     private Integer nroProducao;
@@ -67,8 +62,10 @@ public class Producao {
     private Integer rpm;
 
     @Column(name = "t_movel")
+    @JsonProperty("tMovel")
     private Integer tMovel;
 
     @Column(name = "status")
+    @Convert(converter = StatusProducao.StatusProducaoConverter.class)
     private StatusProducao status;
 }

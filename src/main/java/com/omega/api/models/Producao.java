@@ -1,6 +1,7 @@
 package com.omega.api.models;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.omega.api.enums.StatusProducao;
 import jakarta.persistence.*;
 import lombok.*;
@@ -61,6 +62,7 @@ public class Producao {
     private Integer rpm;
 
     @Column(name = "t_movel")
+    @JsonProperty("tMovel")
     private Integer tMovel;
 
     @Column(name = "status")

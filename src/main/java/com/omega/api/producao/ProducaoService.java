@@ -12,8 +12,10 @@ import com.omega.api.repository.ProducaoRepository;
 import com.omega.api.repository.ProducaoResponsavelRepository;
 import com.omega.api.repository.TurnoRepository;
 import com.omega.api.security.userdetailimp.UserDetailImpl;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -68,6 +70,8 @@ public class ProducaoService {
         handleStateProducaoResponsavel(producao, StatusProducaoResponsavel.PRODUCAO_INICIADA);
         return producao;
     }
+
+
 
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public Producao finalizaProducao(Long idProducao) {
@@ -151,4 +155,21 @@ public class ProducaoService {
         producaoResponsavel.setStatus(statusProducaoResponsavel);
         producaoResponsavelRepository.save(producaoResponsavel);
     }
+
+
+    public List<Producao> getAllProduction(String search, int take, int skip) {
+        var page = search != null && !search.isEmpty()
+                ? producaoRepository.findByLoteFritaContainingIgnoreCase(search, PageRequest.of(skip / take, take))
+                : producaoRepository.findAll(PageRequest.of(skip / take, take));
+
+        System.out.println(page.getContent());
+
+        return (List<Producao>) page.getContent();
+
+    }
+    public Producao getProductionById(Long id) {
+        return producaoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Produção não encontrada com ID: " + id));
+    }
+
 }

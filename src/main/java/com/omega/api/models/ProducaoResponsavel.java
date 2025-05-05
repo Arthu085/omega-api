@@ -2,15 +2,13 @@ package com.omega.api.models;
 
 import com.omega.api.enums.StatusProducaoResponsavel;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity
 @Table(name = "producoes_responsaveis", schema = "omega")
 public class ProducaoResponsavel {
@@ -29,5 +27,6 @@ public class ProducaoResponsavel {
     private Usuario responsavel;
 
     @Column(name = "status", insertable = false, updatable = false)
+    @Convert(converter = StatusProducaoResponsavel.StatusProducaoResponsavelConverter.class)
     private StatusProducaoResponsavel status;
 }

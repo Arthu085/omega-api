@@ -42,7 +42,8 @@ public class SecurityConfiguration {
             "/fornos/update/*",
             "/users/get", // url para fazer get dos usuários
             "/fornos/delete/*",
-            "/auth/user"
+            "/auth/user",
+            "/producoes"
     };
 
     public static final String[] ROLE_ADMIN = {};

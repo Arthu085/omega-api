@@ -27,6 +27,7 @@ public class Forno {
     private Integer nroForno;
 
     @Column(name = "status")
+    @Convert(converter = StatusForno.StatusFornoConverter.class)
     private StatusForno status;
 
 }

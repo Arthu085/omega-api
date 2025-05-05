@@ -36,6 +36,7 @@ public class Usuario {
     private String senha;
 
     @Column(name = "status")
+    @Convert(converter = StatusUsuario.StatusUsuarioConverter.class)
     private StatusUsuario status;
 
     @Column(name = "nome")
@@ -44,24 +45,4 @@ public class Usuario {
     @Column(name = "sobrenome")
     private String sobrenome;
 
-    public Long getId() {
-        return this.id;
-    }
-
-
-    public String getNome() {
-        return this.nome;
-    }
-
-    public String getSobrenome() {
-        return this.sobrenome;
-    }
-
-    public String getEmail(){
-        return this.email;
-    }
-
-    public List<Role> getRoles(){
-        return this.roles;
-    }
 }

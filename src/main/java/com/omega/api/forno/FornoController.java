@@ -26,7 +26,7 @@ public class FornoController {
     }
 
     @GetMapping
-    public Map<String, Object> getAllFornos(
+    public ResponseEntity<Map<String,Object>> getAllFornos(
             @RequestParam(required = false, defaultValue = "") String search,
             @RequestParam(required = false, defaultValue = "10") int take,
             @RequestParam(required = false, defaultValue = "0") int skip) {
@@ -40,7 +40,7 @@ public class FornoController {
         response.put("total", total);
         response.put("pages", pages);
 
-        return response;
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/update/{id}")

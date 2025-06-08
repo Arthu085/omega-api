@@ -1,6 +1,7 @@
 package com.omega.api.users;
 
 import com.omega.api.auth.dtos.CreateUserDto;
+import com.omega.api.users.dtos.UpdateUserDto;
 import com.omega.api.models.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,12 @@ public class UsersController {
     public ResponseEntity<Object> createUser(@RequestBody CreateUserDto createUserDto) {
         usersService.createUser(createUserDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Object> updateUser(@PathVariable Long id, @RequestBody UpdateUserDto updateUserDto) {
+        usersService.update(id, updateUserDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

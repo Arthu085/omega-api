@@ -4,6 +4,7 @@ import com.omega.api.auth.dtos.CreateUserDto;
 import com.omega.api.configuration.SecurityConfiguration;
 import com.omega.api.configuration.exception.ValidationException;
 import com.omega.api.enums.StatusUsuario;
+import com.omega.api.users.dtos.UpdateUserDto;
 import com.omega.api.models.Role;
 import com.omega.api.models.Usuario;
 import com.omega.api.repository.UsuarioRepository;
@@ -48,5 +49,40 @@ public class UsersService {
                 .build();
 
         usuarioRepository.save(newUser);
+    }
+
+    public void update(Long id, UpdateUserDto dto) {
+        Usuario user = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ValidationException("Usuario não encontrado com ID: " + id));
+
+        if (dto.getName() != null) {
+            user.setNome(dto.getName());
+        }
+
+        if (dto.getLastname() != null) {
+            user.setSobrenome(dto.getLastname());
+        }
+
+        if (dto.getEmail() != null) {
+            user.setEmail(dto.getEmail());
+        }
+
+        if (dto.getPassword() != null) {
+            user.setSenha(dto.getPassword());
+            securityConfiguration.passwordEncoder().encode(dto.getPassword());
+        }
+
+        if (dto.getRoleUser() != null) {
+            user.setRoles(List.of(Role.builder().roleName(dto.getRoleUser()).build()));
+
+        }
+
+        if (dto.getStatusUser() != null) {
+            user.setStatus(dto.getStatusUser());
+        }
+
+        log.info(user);
+
+        usuarioRepository.save(user);
     }
 }

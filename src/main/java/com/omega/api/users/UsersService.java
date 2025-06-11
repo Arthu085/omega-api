@@ -3,11 +3,14 @@ package com.omega.api.users;
 import com.omega.api.auth.dtos.CreateUserDto;
 import com.omega.api.configuration.SecurityConfiguration;
 import com.omega.api.configuration.exception.ValidationException;
+import com.omega.api.enums.RoleUser;
 import com.omega.api.enums.StatusUsuario;
 import com.omega.api.users.dtos.UpdateUserDto;
 import com.omega.api.models.Role;
 import com.omega.api.models.Usuario;
 import com.omega.api.repository.UsuarioRepository;
+
+import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +24,7 @@ import java.util.Optional;
 public class UsersService {
     @Autowired
     private UsuarioRepository usuarioRepository;
+    // private RoleRepository roleRepository;
 
     @Autowired
     private SecurityConfiguration securityConfiguration;
@@ -34,10 +38,16 @@ public class UsersService {
     }
 
     public void createUser(CreateUserDto createUserDto) {
-        Optional<Usuario> usuarioEmailRepetido =  usuarioRepository.findByEmail(createUserDto.email());
-        if(usuarioEmailRepetido.isPresent()){
+        Optional<Usuario> usuarioEmailRepetido = usuarioRepository.findByEmail(createUserDto.email());
+        if (usuarioEmailRepetido.isPresent()) {
             throw new ValidationException("Já possui um usuário com o email informado");
         }
+
+        List<Role> userRoles = usuarioRepository.findByRoleNameIn(createUserDto.role());
+
+        // #TODO: chamar o repository de roles
+
+        log.info("Creating user: " + userRoles);
 
         Usuario newUser = Usuario.builder()
                 .nome(createUserDto.nome())
@@ -45,7 +55,8 @@ public class UsersService {
                 .email(createUserDto.email())
                 .senha(securityConfiguration.passwordEncoder().encode(createUserDto.senha()))
                 .status(StatusUsuario.ATIVO)
-                .roles(List.of(Role.builder().roleName(createUserDto.role()).build()))
+                // .roles(List.of(Role.builder().roleName(createUserDto.role()).build()))
+
                 .build();
 
         usuarioRepository.save(newUser);

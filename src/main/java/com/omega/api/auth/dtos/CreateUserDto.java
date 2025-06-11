@@ -1,5 +1,7 @@
 package com.omega.api.auth.dtos;
 
+import java.util.List;
+
 import com.omega.api.enums.RoleUser;
 
 public record CreateUserDto(

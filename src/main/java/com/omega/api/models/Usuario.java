@@ -2,10 +2,7 @@ package com.omega.api.models;
 
 import com.omega.api.enums.StatusUsuario;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -23,25 +20,31 @@ public class Usuario {
     @Column(name = "id")
     private Long id;
 
+    @Setter
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     @JoinTable(name = "usuarios_roles",
             joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_role"), schema = "omega")
     private List<Role> roles;
 
+    @Setter
     @Column(name = "email")
     private String email;
 
+    @Setter
     @Column(name = "senha")
     private String senha;
 
+    @Setter
     @Column(name = "status")
     @Convert(converter = StatusUsuario.StatusUsuarioConverter.class)
     private StatusUsuario status;
 
+    @Setter
     @Column(name = "nome")
     private String nome;
 
+    @Setter
     @Column(name = "sobrenome")
     private String sobrenome;
 

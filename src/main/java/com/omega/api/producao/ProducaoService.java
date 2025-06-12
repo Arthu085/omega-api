@@ -157,12 +157,12 @@ public class ProducaoService {
     }
 
 
-    public List<Producao> getAllProduction(String search, int take, int skip) {
-        var page = search != null && !search.isEmpty()
-                ? producaoRepository.findByLoteFritaContainingIgnoreCase(search, PageRequest.of(skip / take, take))
-                : producaoRepository.findAll(PageRequest.of(skip / take, take));
+    public List<Producao> getAllProduction(String search, String nroProducao, int take, int skip) {
 
-        System.out.println(page.getContent());
+        var page = producaoRepository.searchProducoes(search, nroProducao, PageRequest.of(skip / take, take));
+
+
+        System.out.println("pages " + page.getContent());
 
         return (List<Producao>) page.getContent();
 

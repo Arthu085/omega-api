@@ -21,9 +21,10 @@ public class ProducaoController {
     @GetMapping
     public Map<String, Object> getAllProduction(
             @RequestParam(required = false, defaultValue = "") String search,
+            @RequestParam(required = false, defaultValue = "") String nroProducao,
             @RequestParam(required = false, defaultValue = "10") int take,
             @RequestParam(required = false, defaultValue = "0") int skip) {
-        List<Producao> producao = producaoService.getAllProduction(search, take, skip);
+        List<Producao> producao = producaoService.getAllProduction(search,nroProducao, take, skip);
         long total = producao.size();
 
         int pages = (int) Math.ceil((double) total / take);

@@ -49,23 +49,6 @@ public class AuthService {
         return new RecoveryJwtTokenDto(jwtTokenService.generateToken(userDetails));
     }
 
-    public void createUser(CreateUserDto createUserDto) {
-        Optional<Usuario> usuarioEmailRepetido =  usuarioRepository.findByEmail(createUserDto.email());
-        if(usuarioEmailRepetido.isPresent()){
-            throw new ValidationException("Já possui um usuário com o email informado");
-        }
-        Usuario newUser = Usuario.builder()
-                .nome(createUserDto.nome())
-                .sobrenome(createUserDto.sobrenome())
-                .email(createUserDto.email())
-                .senha(securityConfiguration.passwordEncoder().encode(createUserDto.senha()))
-                .status(StatusUsuario.ATIVO)
-                .roles(List.of(Role.builder().roleName(createUserDto.role()).build()))
-                .build();
-
-        usuarioRepository.save(newUser);
-    }
-
     public UsuarioResponseDto getAuthenticateUser(String email) {
         Usuario user = usuarioRepository.findByEmail(email).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
         return new UsuarioResponseDto(user.getId(),

@@ -44,7 +44,8 @@ public class SecurityConfiguration {
             "/fornos/delete/*",
             "/auth/user",
             "/producoes/*",
-            "/producoes/finalizar/*"
+            "/producoes/finalizar/*",
+            "/users/update/*"
     };
 
     public static final String[] ROLE_ADMIN = {};

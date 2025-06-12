@@ -25,6 +25,7 @@ public class Role {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role_name", nullable = false)
     private RoleUser roleName;
 
     @ManyToMany(mappedBy = "roles")

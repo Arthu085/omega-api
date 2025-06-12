@@ -3,17 +3,19 @@ package com.omega.api.users;
 import com.omega.api.auth.dtos.CreateUserDto;
 import com.omega.api.configuration.SecurityConfiguration;
 import com.omega.api.configuration.exception.ValidationException;
-import com.omega.api.enums.RoleUser;
 import com.omega.api.enums.StatusUsuario;
+import com.omega.api.models.UsuariosRole;
+import com.omega.api.repository.FuncaoRepository;
+import com.omega.api.repository.FuncaoUsuarioRepository;
 import com.omega.api.users.dtos.UpdateUserDto;
 import com.omega.api.models.Role;
 import com.omega.api.models.Usuario;
 import com.omega.api.repository.UsuarioRepository;
 
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,10 +26,18 @@ import java.util.Optional;
 public class UsersService {
     @Autowired
     private UsuarioRepository usuarioRepository;
-    // private RoleRepository roleRepository;
+
+    @Autowired
+    private FuncaoUsuarioRepository funcaoUsuarioRepository;
+
+    @Autowired
+    private FuncaoRepository funcaoRepository;
 
     @Autowired
     private SecurityConfiguration securityConfiguration;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public List<Usuario> getAllUsers(String search, int take, int skip) {
         var page = search != null && !search.isEmpty()
@@ -43,11 +53,7 @@ public class UsersService {
             throw new ValidationException("Já possui um usuário com o email informado");
         }
 
-        List<Role> userRoles = usuarioRepository.findByRoleNameIn(createUserDto.role());
-
-        // #TODO: chamar o repository de roles
-
-        log.info("Creating user: " + userRoles);
+        Role userRoles = funcaoRepository.findFirstByRoleName(createUserDto.role());
 
         Usuario newUser = Usuario.builder()
                 .nome(createUserDto.nome())
@@ -55,44 +61,51 @@ public class UsersService {
                 .email(createUserDto.email())
                 .senha(securityConfiguration.passwordEncoder().encode(createUserDto.senha()))
                 .status(StatusUsuario.ATIVO)
-                // .roles(List.of(Role.builder().roleName(createUserDto.role()).build()))
-
                 .build();
 
         usuarioRepository.save(newUser);
+
+        UsuariosRole novoUsuarioRole = UsuariosRole.builder()
+                .idRole(userRoles.getId())
+                .idUser(newUser.getId())
+                .build();
+
+        funcaoUsuarioRepository.save(novoUsuarioRole);
     }
 
     public void update(Long id, UpdateUserDto dto) {
         Usuario user = usuarioRepository.findById(id)
                 .orElseThrow(() -> new ValidationException("Usuario não encontrado com ID: " + id));
 
-        if (dto.getName() != null) {
-            user.setNome(dto.getName());
+        if (dto.name() != null) {
+            user.setNome(dto.name());
         }
 
-        if (dto.getLastname() != null) {
-            user.setSobrenome(dto.getLastname());
+        if (dto.lastname() != null) {
+            user.setSobrenome(dto.lastname());
         }
 
-        if (dto.getEmail() != null) {
-            user.setEmail(dto.getEmail());
+        if (dto.email() != null) {
+            user.setEmail(dto.email());
         }
 
-        if (dto.getPassword() != null) {
-            user.setSenha(dto.getPassword());
-            securityConfiguration.passwordEncoder().encode(dto.getPassword());
+        if (dto.password() != null) {
+            String encodedPassword = passwordEncoder.encode(dto.password());
+            user.setSenha(encodedPassword);
         }
 
-        if (dto.getRoleUser() != null) {
-            user.setRoles(List.of(Role.builder().roleName(dto.getRoleUser()).build()));
+        if (dto.roleName() != null) {
+            Role roleId = funcaoRepository.findFirstByRoleName(dto.roleName());
+            UsuariosRole roleUser = funcaoUsuarioRepository.findByIdUser(id);
 
+            roleUser.setIdRole(roleId.getId());
+
+            funcaoUsuarioRepository.save(roleUser);
         }
 
-        if (dto.getStatusUser() != null) {
-            user.setStatus(dto.getStatusUser());
+        if (dto.statusUser() != null) {
+            user.setStatus(dto.statusUser());
         }
-
-        log.info(user);
 
         usuarioRepository.save(user);
     }
